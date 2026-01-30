@@ -1,59 +1,333 @@
 @import "tailwindcss";
 
-/* Theme customization for YoyImmo */
+/*
+  YoyImmo Design System: "Modern Architect's Office"
+  Concept: Financial clarity through architectural precision
+  Palette: Terra cotta + concrete + sage green
+*/
+
+/* Import distinctive fonts */
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Archivo:wght@300;400;600;700&display=swap');
+
 @theme {
-  /* Colors - using OKLCH for Tailwind v4 */
-  --color-background: oklch(1 0 0);
-  --color-foreground: oklch(0.145 0.015 285);
+  /* Architectural Color Palette - OKLCH for precision */
+  /* Terra cotta accent - warm, grounded */
+  --color-terra: oklch(0.62 0.14 35);
+  --color-terra-light: oklch(0.75 0.10 35);
+  --color-terra-dark: oklch(0.48 0.16 35);
 
-  --color-primary: oklch(0.205 0.015 285);
-  --color-primary-foreground: oklch(0.985 0 0);
+  /* Concrete neutrals - professional, structural */
+  --color-concrete: oklch(0.88 0.005 270);
+  --color-concrete-dark: oklch(0.32 0.01 270);
+  --color-concrete-darker: oklch(0.22 0.015 270);
 
-  --color-secondary: oklch(0.97 0.005 285);
-  --color-secondary-foreground: oklch(0.205 0.015 285);
+  /* Sage green - nature, living spaces */
+  --color-sage: oklch(0.68 0.08 140);
+  --color-sage-light: oklch(0.92 0.03 140);
+  --color-sage-dark: oklch(0.48 0.10 140);
 
-  --color-muted: oklch(0.97 0.005 285);
-  --color-muted-foreground: oklch(0.556 0.015 285);
+  /* Blueprint blue - technical precision */
+  --color-blueprint: oklch(0.45 0.18 250);
+  --color-blueprint-light: oklch(0.88 0.05 250);
 
-  --color-accent: oklch(0.97 0.005 285);
-  --color-accent-foreground: oklch(0.205 0.015 285);
+  /* Semantic color mappings */
+  --color-background: oklch(0.98 0.002 270); /* Off-white paper */
+  --color-foreground: var(--color-concrete-darker);
 
-  --color-destructive: oklch(0.577 0.245 27);
-  --color-destructive-foreground: oklch(0.985 0 0);
+  --color-primary: var(--color-terra);
+  --color-primary-foreground: oklch(0.98 0 0);
 
-  --color-border: oklch(0.922 0.005 285);
-  --color-input: oklch(0.922 0.005 285);
-  --color-ring: oklch(0.708 0.015 285);
+  --color-secondary: var(--color-sage);
+  --color-secondary-foreground: var(--color-concrete-darker);
+
+  --color-muted: var(--color-concrete);
+  --color-muted-foreground: oklch(0.55 0.01 270);
+
+  --color-accent: var(--color-blueprint);
+  --color-accent-foreground: oklch(0.98 0 0);
+
+  --color-destructive: oklch(0.55 0.22 25);
+  --color-destructive-foreground: oklch(0.98 0 0);
+
+  --color-border: oklch(0.85 0.005 270);
+  --color-input: oklch(0.92 0.005 270);
+  --color-ring: var(--color-terra);
 
   --color-card: oklch(1 0 0);
-  --color-card-foreground: oklch(0.145 0.015 285);
+  --color-card-foreground: var(--color-concrete-darker);
 
   --color-popover: oklch(1 0 0);
-  --color-popover-foreground: oklch(0.145 0.015 285);
+  --color-popover-foreground: var(--color-concrete-darker);
 
-  /* Border radius */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
+  /* Architectural border radius - precise angles */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
 
-  /* Font families */
-  --font-sans: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* Typography - Technical precision meets elegance */
+  --font-display: 'Archivo', sans-serif; /* Clean architectural headers */
+  --font-mono: 'Space Mono', monospace; /* Technical data display */
+  --font-sans: 'Archivo', system-ui, sans-serif;
+
+  /* Spacing system - modular scale */
+  --space-unit: 0.25rem;
 }
 
-/* Base layer styles */
+/* Base layer - architectural foundation */
 @layer base {
   * {
     border-color: var(--color-border);
+  }
+
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
   }
 
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1.6;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    position: relative;
   }
+
+  /* Subtle grid pattern background - blueprint aesthetic */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+      linear-gradient(var(--color-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Typography hierarchy */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-concrete-darker);
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  /* Data display uses monospace */
+  .metric-value,
+  .data-display {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  /* Smooth transitions */
+  * {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+}
+
+/* Component layer - architectural elements */
+@layer components {
+  /* Stat card with construction line detail */
+  .stat-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(
+      180deg,
+      var(--color-terra) 0%,
+      var(--color-terra-light) 100%
+    );
+    opacity: 0;
+    transition: opacity 300ms ease;
+  }
+
+  .stat-card:hover::before {
+    opacity: 1;
+  }
+
+  /* Blueprint-style section divider */
+  .section-divider {
+    position: relative;
+    height: 1px;
+    background: var(--color-border);
+    margin: 2rem 0;
+  }
+
+  .section-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    background: var(--color-terra);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Measurement annotation style */
+  .measure-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-muted-foreground);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Blueprint corner markers */
+  .blueprint-corner {
+    position: relative;
+  }
+
+  .blueprint-corner::before,
+  .blueprint-corner::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--color-blueprint);
+  }
+
+  .blueprint-corner::before {
+    top: 0;
+    left: 0;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .blueprint-corner::after {
+    bottom: 0;
+    right: 0;
+    border-left: none;
+    border-top: none;
+  }
+}
+
+/* Utilities layer - precision tools */
+@layer utilities {
+  /* Architectural shadows - subtle depth */
+  .shadow-arch {
+    box-shadow:
+      0 1px 2px 0 rgb(0 0 0 / 0.03),
+      0 2px 4px 0 rgb(0 0 0 / 0.02);
+  }
+
+  .shadow-arch-lg {
+    box-shadow:
+      0 4px 6px -1px rgb(0 0 0 / 0.05),
+      0 8px 12px -2px rgb(0 0 0 / 0.04);
+  }
+
+  /* Text decoration - technical precision */
+  .text-technical {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    letter-spacing: 0.01em;
+  }
+
+  /* Grid overlay utility */
+  .grid-overlay {
+    background-image:
+      linear-gradient(var(--color-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+}
+
+/* Animation utilities */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Stagger animation delays */
+.delay-100 {
+  animation-delay: 100ms;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+}
+
+.delay-400 {
+  animation-delay: 400ms;
 }

@@ -3,7 +3,7 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useHealthCheck } from './useHealthCheck'
 import * as api from '@/services/api'
-import type { ReactNode } from 'react'
+import React, { type ReactNode } from 'react'
 
 vi.mock('@/services/api')
 

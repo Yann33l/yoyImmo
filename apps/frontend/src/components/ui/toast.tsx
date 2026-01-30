@@ -13,7 +13,7 @@ interface ToastProps extends Toast {
   onClose: () => void
 }
 
-export function ToastItem({ id, title, description, variant = 'default', onClose }: ToastProps) {
+export function ToastItem({ id: _id, title, description, variant = 'default', onClose }: ToastProps) {
   React.useEffect(() => {
     const timer = setTimeout(onClose, 5000)
     return () => clearTimeout(timer)
