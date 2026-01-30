@@ -1,0 +1,120 @@
+# Sprint Status - YoyImmo Project
+# Generated: 2026-01-28
+# Project: BMAD (YoyImmo)
+# Tracking System: file-system
+# Story Location: F:\App\BMAD\_bmad-output\implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Epic Status Transitions:
+#   - backlog → in-progress: Automatically when first story is created (via create-story)
+#   - in-progress → done: Manually when all stories reach 'done' status
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (via Dev's code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epic transitions to 'in-progress' automatically when first story is created
+# - Stories can be worked in parallel if team capacity allows
+# - SM typically creates next story after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
+
+generated: 2026-01-28
+project: BMAD
+project_key: yoyimmo
+tracking_system: file-system
+story_location: F:\App\BMAD\_bmad-output\implementation-artifacts
+
+development_status:
+  # Epic 1: Application Setup & Infrastructure
+  epic-1: in-progress
+  1-1-project-initialization-with-starter-templates: done
+  1-2-prisma-orm-setup-with-sqlite: done
+  1-3-docker-compose-configuration-with-external-volume: review
+  1-4-core-infrastructure-setup-logging-error-handling-api-docs: done
+  1-5-frontend-ui-library-setup-shadcn-ui-tailwind: done
+  1-6-react-query-setup-for-state-management: done
+  1-7-backup-restore-system: backlog
+  epic-1-retrospective: optional
+
+  # Epic 2: User Authentication & Data Security
+  epic-2: in-progress
+  2-1-user-registration-with-password-hashing: done
+  2-2-user-login-with-jwt-authentication: backlog
+  2-3-jwt-refresh-token-implementation: backlog
+  2-4-protected-routes-with-auth-guards: backlog
+  2-5-user-profile-management: backlog
+  epic-2-retrospective: optional
+
+  # Epic 3: Property & Tenant Management
+  epic-3: backlog
+  3-1-property-data-model-and-crud-api: backlog
+  3-2-tenant-data-model-and-crud-api: backlog
+  3-3-properties-frontend-list-and-create: backlog
+  3-4-tenants-frontend-list-and-create: backlog
+  3-5-property-details-page-with-overview: backlog
+  epic-3-retrospective: optional
+
+  # Epic 4: Lease Contract Management
+  epic-4: backlog
+  4-1-lease-data-model-and-crud-api: backlog
+  4-2-lease-frontend-create-and-list: backlog
+  4-3-lease-details-and-history-view: backlog
+  epic-4-retrospective: optional
+
+  # Epic 5: Rent Tracking & Payment Validation
+  epic-5: backlog
+  5-1-rent-data-model-and-payment-tracking-api: backlog
+  5-2-mark-rent-as-paid-api: backlog
+  5-3-rent-payment-dashboard-home-page: backlog
+  5-4-rent-payment-history: backlog
+  5-5-overdue-rent-detection-and-visual-indicators: backlog
+  epic-5-retrospective: optional
+
+  # Epic 6: Fiscal Dashboard & Tax Preparation
+  epic-6: backlog
+  6-1-fiscal-data-model-and-calculation-service: backlog
+  6-2-invoice-data-model-for-expense-tracking: backlog
+  6-3-fiscal-dashboard-frontend: backlog
+  6-4-fiscal-data-export: backlog
+  epic-6-retrospective: optional
+
+  # Epic 7: Document Storage & Quick Search
+  epic-7: backlog
+  7-1-document-data-model-and-file-upload-api: backlog
+  7-2-document-list-and-download-api: backlog
+  7-3-document-search-and-filtering-frontend: backlog
+  7-4-document-upload-frontend: backlog
+  7-5-documents-tab-on-property-details: backlog
+  epic-7-retrospective: optional
+
+  # Epic 8: Invoice & Expense Tracking
+  epic-8: backlog
+  8-1-invoice-frontend-create-and-list: backlog
+  8-2-invoice-with-document-upload-integration: backlog
+  8-3-invoice-categorization-with-helper-descriptions: backlog
+  8-4-bulk-invoice-import-optional-enhancement: backlog
+  epic-8-retrospective: optional
+
+  # Epic 9: Automated Notifications & Reminders
+  epic-9: backlog
+  9-1-notification-data-model-and-service: backlog
+  9-2-rent-reminder-cron-job-j-2: backlog
+  9-3-notification-center-frontend: backlog
+  9-4-additional-notification-types: backlog
+  9-5-notification-preferences-optional: backlog
+  epic-9-retrospective: optional

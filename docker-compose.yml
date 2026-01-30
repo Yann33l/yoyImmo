@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: ./apps/backend/Dockerfile
+    container_name: yoyimmo-backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./yoyimmo-data:/app/data
+    environment:
+      - DATABASE_URL=file:/app/data/database/yoyimmo.db
+      - NODE_ENV=production
+      - PORT=3000
+    restart: unless-stopped
+    networks:
+      - yoyimmo-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./apps/frontend/Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:3000
+    container_name: yoyimmo-frontend
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    depends_on:
+      - backend
+    networks:
+      - yoyimmo-network
+
+networks:
+  yoyimmo-network:
+    driver: bridge
