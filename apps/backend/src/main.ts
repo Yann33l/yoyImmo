@@ -1,6 +1,6 @@
+import { RequestMethod, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
@@ -14,8 +14,13 @@ async function bootstrap() {
     credentials: true,
   });
 
-  // Set global prefix for all routes
-  app.setGlobalPrefix('api');
+  // Set global prefix for all routes, but exclude the root health check
+  app.setGlobalPrefix('api', {
+    exclude: [
+      { path: 'health', method: RequestMethod.GET },
+      { path: 'health', method: RequestMethod.HEAD },
+    ],
+  });
 
   // Enable global validation
   app.useGlobalPipes(
@@ -39,8 +44,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
-  await app.listen(3000);
-  console.log(`Application is running on: http://localhost:3000/api`);
-  console.log(`Swagger docs available at: http://localhost:3000/api/docs`);
+  const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+  await app.listen(port);
+  console.log(`Application is running on: http://localhost:${port}/api`);
+  console.log(`Swagger docs available at: http://localhost:${port}/api/docs`);
 }
 bootstrap();

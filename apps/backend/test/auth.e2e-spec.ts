@@ -176,4 +176,152 @@ describe('Auth (e2e)', () => {
         .expect(400);
     });
   });
+
+  describe('POST /api/v1/auth/login', () => {
+    const testUser = {
+      email: 'login-test@example.com',
+      password: 'Password123',
+    };
+
+    beforeEach(async () => {
+      // Register a test user before login tests
+      await request(app.getHttpServer())
+        .post('/api/v1/auth/register')
+        .send(testUser);
+    });
+
+    it('should login with valid credentials and return 200', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/api/v1/auth/login')
+        .send(testUser)
+        .expect(200);
+
+      expect(response.body).toHaveProperty('user');
+      expect(response.body.user).toHaveProperty('id');
+      expect(response.body.user).toHaveProperty('email', testUser.email);
+      expect(response.body).toHaveProperty('message', 'Login successful');
+      expect(response.body).not.toHaveProperty('password');
+      expect(response.body).not.toHaveProperty('passwordHash');
+      expect(response.body).not.toHaveProperty('accessToken');
+      expect(response.body).not.toHaveProperty('refreshToken');
+    });
+
+    it('should set access_token cookie with httpOnly flag', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/api/v1/auth/login')
+        .send(testUser)
+        .expect(200);
+
+      const cookies = response.headers['set-cookie'];
+      expect(cookies).toBeDefined();
+      expect(Array.isArray(cookies) ? cookies : [cookies]).toEqual(
+        expect.arrayContaining([expect.stringContaining('access_token=')]),
+      );
+      const cookieArray = Array.isArray(cookies) ? cookies : [cookies];
+      const accessTokenCookie = cookieArray.find((cookie) =>
+        cookie.startsWith('access_token='),
+      );
+      expect(accessTokenCookie).toContain('HttpOnly');
+      expect(accessTokenCookie).toContain('SameSite=Strict');
+    });
+
+    it('should set refresh_token cookie with httpOnly flag', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/api/v1/auth/login')
+        .send(testUser)
+        .expect(200);
+
+      const cookies = response.headers['set-cookie'];
+      expect(cookies).toBeDefined();
+      expect(Array.isArray(cookies) ? cookies : [cookies]).toEqual(
+        expect.arrayContaining([expect.stringContaining('refresh_token=')]),
+      );
+      const cookieArray = Array.isArray(cookies) ? cookies : [cookies];
+      const refreshTokenCookie = cookieArray.find((cookie) =>
+        cookie.startsWith('refresh_token='),
+      );
+      expect(refreshTokenCookie).toContain('HttpOnly');
+      expect(refreshTokenCookie).toContain('SameSite=Strict');
+    });
+
+    it('should return 401 with invalid email', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/api/v1/auth/login')
+        .send({
+          email: 'nonexistent@example.com',
+          password: 'Password123',
+        })
+        .expect(401);
+
+      expect(response.body.message).toBe('Invalid credentials');
+    });
+
+    it('should return 401 with incorrect password', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/api/v1/auth/login')
+        .send({
+          email: testUser.email,
+          password: 'WrongPassword123',
+        })
+        .expect(401);
+
+      expect(response.body.message).toBe('Invalid credentials');
+    });
+
+    it('should return 400 when email is missing', async () => {
+      await request(app.getHttpServer())
+        .post('/api/v1/auth/login')
+        .send({
+          password: 'Password123',
+        })
+        .expect(400);
+    });
+
+    it('should return 400 when password is missing', async () => {
+      await request(app.getHttpServer())
+        .post('/api/v1/auth/login')
+        .send({
+          email: testUser.email,
+        })
+        .expect(400);
+    });
+
+    it('should return 400 with invalid email format', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/api/v1/auth/login')
+        .send({
+          email: 'invalid-email',
+          password: 'Password123',
+        })
+        .expect(400);
+
+      expect(response.body.message).toContain('Invalid email format');
+    });
+
+    it('should allow multiple logins for the same user', async () => {
+      // First login
+      await request(app.getHttpServer())
+        .post('/api/v1/auth/login')
+        .send(testUser)
+        .expect(200);
+
+      // Second login
+      const response = await request(app.getHttpServer())
+        .post('/api/v1/auth/login')
+        .send(testUser)
+        .expect(200);
+
+      expect(response.body.message).toBe('Login successful');
+    });
+
+    it('should not expose tokens in response body', async () => {
+      const response = await request(app.getHttpServer())
+        .post('/api/v1/auth/login')
+        .send(testUser)
+        .expect(200);
+
+      expect(response.body.accessToken).toBeUndefined();
+      expect(response.body.refreshToken).toBeUndefined();
+    });
+  });
 });

@@ -1,8 +1,8 @@
 import { Controller, Get, Logger } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Health')
-@Controller('v1/health')
+@Controller(['v1/health', 'health'])
 export class HealthController {
   private readonly logger = new Logger(HealthController.name);
 
