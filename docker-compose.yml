@@ -15,6 +15,20 @@ services:
       - NODE_ENV=production
       - PORT=3000
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/v1/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
     networks:
       - yoyimmo-network
 
@@ -23,13 +37,31 @@ services:
       context: .
       dockerfile: ./apps/frontend/Dockerfile
       args:
+        # IMPORTANT: VITE_API_URL is baked into build at compile time
+        # Changing this value requires rebuilding the image with:
+        # docker-compose build frontend
         - VITE_API_URL=http://localhost:3000
     container_name: yoyimmo-frontend
     ports:
       - "8080:80"
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+        reservations:
+          cpus: '0.25'
+          memory: 64M
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     networks:
       - yoyimmo-network
 

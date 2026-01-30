@@ -1,0 +1,36 @@
+# BMAD framework and output
+_bmad/
+_bmad-output/
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.cursor/
+.claude/
+.idea/
+
+# Node
+node_modules/
+
+# Documentation
+*.md
+README.md
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+
+# Data (managed via volume)
+yoyimmo-data/

@@ -1,6 +1,6 @@
 # Story 1.3: Docker Compose Configuration with External Volume
 
-Status: review
+Status: done
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -424,9 +424,10 @@ Claude Opus 4.5 (claude-opus-4-5-20251101)
 ### File List
 
 **Modified:**
-- docker-compose.yml (build context changed to project root)
-- apps/backend/Dockerfile (changed to node:20-slim, npm install, OpenSSL install)
+- docker-compose.yml (build context, healthchecks, resource limits, documented VITE_API_URL)
+- apps/backend/Dockerfile (node:20-slim, optimized node_modules copy, curl install)
 - apps/frontend/Dockerfile (adjusted paths for root context)
+- apps/frontend/nginx.conf (security headers, optimized gzip)
 - apps/backend/prisma/schema.prisma (added binaryTargets)
 - apps/backend/src/main.ts (CORS updated to accept both localhost:5173 dev and localhost:8080 production)
 
@@ -434,9 +435,22 @@ Claude Opus 4.5 (claude-opus-4-5-20251101)
 - apps/frontend/nginx.conf
 - apps/backend/.dockerignore
 - apps/frontend/.dockerignore
+- .dockerignore (root level for build context optimization)
 
 **Verified Working:**
 - yoyimmo-data volume mount (./yoyimmo-data:/app/data)
 - Frontend accessible at http://localhost:8080
 - Backend accessible at http://localhost:3000
 - Data persistence across container restarts
+
+**Code Review Fixes (2026-01-30):**
+- ✅ M1: Optimized backend Dockerfile - copy node_modules from builder instead of reinstalling
+- ✅ M2: Added healthchecks to both services in docker-compose.yml with proper timeouts
+- ✅ M3: Documented VITE_API_URL build-time limitation (requires rebuild to change)
+- ✅ M4: Added security headers to nginx.conf (X-Frame-Options, X-XSS-Protection, etc.)
+- ✅ M5: Created root .dockerignore to exclude _bmad/, .git/, IDE files from build context
+- ✅ L1: Improved nginx gzip configuration (gzip_vary, gzip_min_length, gzip_comp_level)
+- ✅ L2: Added resource limits (CPU/memory) to both services in docker-compose.yml
+- ✅ Backend Dockerfile: Added curl for healthcheck support
+- ✅ Frontend healthcheck: Uses wget (available in nginx:alpine)
+- ✅ Backend depends_on: Changed to service_healthy condition

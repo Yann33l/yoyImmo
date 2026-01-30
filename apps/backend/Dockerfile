@@ -25,19 +25,18 @@ RUN npm run build
 FROM node:20-slim
 
 # Install OpenSSL for Prisma
-RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y openssl curl && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 # Copy package files
 COPY apps/backend/package*.json ./
 
-# Install production dependencies only
-RUN npm install --only=production --legacy-peer-deps
+# Copy node_modules from builder (faster than reinstalling)
+COPY --from=builder /app/node_modules ./node_modules
 
 # Copy built app from builder
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/prisma ./prisma
 
 # Create data directory
